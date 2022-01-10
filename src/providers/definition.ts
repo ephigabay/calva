@@ -5,6 +5,17 @@ import annotations from './annotations';
 import * as namespace from '../namespace';
 import * as outputWindow from '../results-output/results-doc';
 import * as replSession from '../nrepl/repl-session';
+import { getConfig } from '../config';
+import { reduce } from 'lodash';
+
+function mapFilePaths(origFilePath: string) : string {
+  const a = getConfig().pathsMapping;
+  return reduce(getConfig().pathsMapping, (filePath, mapping) => {
+    const source = mapping[0].replace("${workspaceFolder}", vscode.workspace.workspaceFolders[0].uri.path);
+    const target = mapping[1].replace("${workspaceFolder}", vscode.workspace.workspaceFolders[0].uri.path);
+    return filePath.replace(source, target);
+  }, origFilePath);
+}
 
 // Used by out LSP middleware
 export async function provideClojureDefinition(document, position: vscode.Position, _token) {
@@ -17,7 +28,8 @@ export async function provideClojureDefinition(document, position: vscode.Positi
     if (info.file && info.file.length > 0) {
       const pos = new vscode.Position(info.line - 1, info.column || 0);
       try {
-        return new vscode.Location(vscode.Uri.parse(info.file, true), pos);
+        const newPath = mapFilePaths(info.file);
+        return new vscode.Location(vscode.Uri.parse(newPath, true), pos);
       } catch(e) { /* ignore */ }
     }
   }

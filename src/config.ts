@@ -1,3 +1,4 @@
+import { split } from 'lodash';
 import * as vscode from 'vscode';
 import { customREPLCommandSnippet } from './evaluate';
 import { ReplConnectSequence } from './nrepl/connectSequence';
@@ -45,6 +46,7 @@ function getConfig() {
         customCljsRepl: configOptions.get("customCljsRepl", null),
         replConnectSequences: configOptions.get("replConnectSequences") as ReplConnectSequence[],
         myLeinProfiles: configOptions.get("myLeinProfiles", []).map(_trimAliasName) as string[],
+        pathsMapping: configOptions.get("pathsMapping", []).map(_trimAliasName).map(v => split(v, ';')) as [string[]],
         myCljAliases: configOptions.get("myCljAliases", []).map(_trimAliasName) as string[],
         asyncOutputDestination: configOptions.get("sendAsyncOutputTo") as string,
         customREPLCommandSnippets: configOptions.get("customREPLCommandSnippets", []),

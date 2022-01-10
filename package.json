@@ -413,6 +413,13 @@
                             ]
                         }
                     },
+                    "calva.pathsMapping": {
+                        "type": "array",
+                        "description": "Mapping of file paths provided by nRepl to local paths. This field supports `${workspaceFolder}` variable.",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
                     "calva.myLeinProfiles": {
                         "type": "array",
                         "description": "At Jack in, any profiles listed here will be added to the profiles found in the `project.clj` file.",
