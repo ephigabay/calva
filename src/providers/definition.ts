@@ -9,7 +9,6 @@ import { getConfig } from '../config';
 import { reduce } from 'lodash';
 
 function mapFilePaths(origFilePath: string) : string {
-  const a = getConfig().pathsMapping;
   return reduce(getConfig().pathsMapping, (filePath, mapping) => {
     const source = mapping[0].replace("${workspaceFolder}", vscode.workspace.workspaceFolders[0].uri.path);
     const target = mapping[1].replace("${workspaceFolder}", vscode.workspace.workspaceFolders[0].uri.path);
